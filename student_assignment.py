@@ -4,13 +4,25 @@ import traceback
 from model_configurations import get_model_configuration
 
 from langchain_openai import AzureChatOpenAI
-# from langchain_core.messages import HumanMessage
+from langchain_core.messages import HumanMessage
 
 gpt_chat_version = 'gpt-4o'
 gpt_config = get_model_configuration(gpt_chat_version)
 
 
-# import homework 1
+
+import json
+import traceback
+
+#from model_configurations import get_model_configuration
+
+#from langchain_openai import AzureChatOpenAI
+#from langchain_core.messages import HumanMessage
+
+#gpt_chat_version = 'gpt-4o'
+#gpt_config = get_model_configuration(gpt_chat_version)
+
+
 from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from langchain_core.prompts import ChatPromptTemplate
 
@@ -52,13 +64,11 @@ def extract_json(message: AIMessage) -> List[dict]:
         return [json.loads(match.strip()) for match in matches]
     except Exception:
         raise ValueError(f"Failed to parse: {message}")
-# import homwork 1
+
 
 
 def generate_hw01(question):
-
-# import homework 1
-llm = AzureChatOpenAI(
+    llm = AzureChatOpenAI(
             model=gpt_config['model_name'],
             deployment_name=gpt_config['deployment_name'],
             openai_api_key=gpt_config['api_key'],
@@ -67,7 +77,21 @@ llm = AzureChatOpenAI(
             temperature=gpt_config['temperature']
     )
 
-prompt = ChatPromptTemplate.from_messages(
+    # Prompt
+    """
+    prompt = ChatPromptTemplate.from_messages(
+        [
+            (
+                "system",
+                "Answer the user query. Output your answer as JSON that  "
+                "matches the given schema: \`\`\`json\n{schema}\n\`\`\`. "
+                "Make sure to wrap the answer in \`\`\`json and \`\`\` tags",
+            ),
+            ("human", "{query}"),
+        ]
+    ).partial(schema=Fianl_Result.model_json_schema())
+    """
+    prompt = ChatPromptTemplate.from_messages(
         [
             (
                 "system",
@@ -95,8 +119,9 @@ prompt = ChatPromptTemplate.from_messages(
     return json.dumps(response, ensure_ascii = False)
     #return response
 
-# import homework 1
 
+
+    
 def generate_hw02(question):
     pass
     
